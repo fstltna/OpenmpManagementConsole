@@ -1,21 +1,19 @@
-# CoffeeMUD Management Console (1.14.0)
-Allows you to manage your CoffeeMUD server with a text based UI - 
-Official support sites: [Official Github Repo](https://github.com/fstltna/CoffeeManagementConsole) - [Official Forum](https://pocketmud.com/index.php/forum/server-utils)
-
-
-![Coffee MUD Sample Screen](https://pocketmud.com/coffee_mud.png) 
+# Open.mp Management Console (1.0.0)
+Allows you to manage your Open.mp server with a text based UI
 
 ---
 
-Edit "cmc" and change the settings at the top if your CoffeeMUD server is not in /home/cmowner/CoffeeMud.
+Edit "omc" and change the settings at the top if your Open.mp server is not in /home/openmpowner/Open.mp
 
-You also need to have my CoffeeMUD Startup Script installed.
+You also need to have my Open.mp Startup Script installed.
 
-I suggest you then add this to your /home/cmowner/.bashrc file:
-	export PATH=/home/cmowner/bin:/home/cmowner/CoffeeManagementConsole:$PATH
+I suggest you then add this to your /home/openmpowner/.bashrc file:
+
+	export PATH=/home/openmpowner/bin:/home/openmpowner/OpenmpManagementConsole:$PATH
+
 You will need to install the required perl modules (as root):
 
-- /home/cmowner/CoffeeManagementConsole/installdeps
+- /home/openmpowner/OpenmpManagementConsole/installdeps
 
 
-After that you should log out and back in and now "cmc" should work.
+After that you should log out and back in and now "omc" should work.
