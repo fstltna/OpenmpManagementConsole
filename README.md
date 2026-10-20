@@ -17,3 +17,8 @@ You will need to install the required perl modules (as root):
 
 
 After that you should log out and back in and now "omc" should work.
+
+Add this to ~/.bashrc:
+
+export PATH=~/bin:~/OpenmpManagementConsole:$PATH
+
