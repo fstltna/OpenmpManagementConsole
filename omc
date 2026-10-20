@@ -197,35 +197,8 @@ sub UpdateTools
 		{
 			# Update Startup
 			DoUpdate($StartupDir);
-			if (! -d $BinDir)
-			{
-				print "Binary dir $BinDir not found, creating...\n";
-				system("mkdir -p $BinDir");
-			}
-			system("cp $StartupDir/coffeemud $BinDir");
-			system("cp $StartupDir/startcoffeemud $OPENMPDIR");
-			system("cp $StartupDir/InstallUNIX-auto.sh $OPENMPDIR");
 		}
 	}
-}
-
-sub UpdateCMMenu
-{
-	my $WantRespawn="ON";
-	CheckServerStatus();
-	if (-f "$OPENMPDIR/nostart")
-	{
-		$WantRespawn="OFF";
-	}
-
-	$menuselection = $d->menu( title => "Open.mp Update Menu", text => "Server is $ServerStatus and respawn is $WantRespawn - Select one:",
-                            list => [ '1', 'How to Update',
-                                      '2', 'Backup MUD',
-                                      '3', 'Backup fakedb',
-                                      '4', 'Update CoffeMud',
-                                      '5', 'Fix Schema',
-                                      '6', 'Edit coffeemud.ini',
-                                      'q', 'Main Menu' ] );
 }
 
 sub ProcesKillMenu
