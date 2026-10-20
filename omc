@@ -22,6 +22,8 @@ my $DiskFreeCmd = "/usr/bin/df -h";
 my $MailQueueCmd = "/usr/bin/mailq";
 my $ShellCommand = "/usr/bin/bash";
 
+my $OMC_Config = "$ENV{HOME}/.openmprc";
+
 ###################################################
 # No changes below here
 ###################################################
@@ -66,6 +68,72 @@ $MailQueueCmd
 # How do we spawn a shell?
 $ShellCommand
 END_TEMPLATE
+
+if (! -f $OMC_Config)
+{
+	print "Settings file $OMC_Config not found, creating it...\n";
+	open(FILEOUT, '>', $OMC_Config) or die $!;
+        print FILEOUT "$defaultconfig";
+	close(FILEOUT);
+	system("$FileEditor $OMC_Config");
+	print "Preferences created, please rerun the script\n";
+	exit 0;
+}
+
+my $num_args = $#ARGV + 1;
+if ($num_args != 0)
+{
+	if ($ARGV[0] eq "prefs")
+        {
+                system("$EDITOR $OMC_Config");
+                exit 0;
+        }
+}
+
+open(FILEIN, '<', $OMC_Config) or die $!;
+my $LastLine = 0;
+while(<FILEIN>)
+{
+	# print $_;
+	if ((substr($_, 0, 1) eq "#") || ($_ eq ""))
+	{
+		# skip over comments and blank lines
+		next;
+	}
+	chop();
+	if ($LastLine == 0)
+	{
+		$ServerName = $_;
+		$LastLine++;
+		DebugPrint("saw server name '$ServerName'\n");
+		next;
+	}
+	elsif ($LastLine == 1)
+	{
+		$SORTMODE = $_;
+		DebugPrint("saw sortmode '$SORTMODE'\n");
+		if (($SORTMODE ne "date") && ($SORTMODE ne "name"))
+		{
+			$SORTMODE = "name";
+		}
+		$LastLine++;
+	}
+	elsif ($LastLine == 2)
+	{
+		$DownloadNotice = $_;
+		$LastLine++;
+		DebugPrint("saw download notice '$DownloadNotice'\n");
+		next;
+	}
+	elsif ($LastLine == 3)
+	{
+		$RepoDir = $_;
+		$LastLine++;
+		DebugPrint("saw repodir '$RepoDir'\n");
+		next;
+	}
+}
+close(FILEIN);
 
 sub PrintDebugCommand
 {
