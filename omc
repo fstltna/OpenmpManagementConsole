@@ -85,9 +85,21 @@ if ($num_args != 0)
 {
 	if ($ARGV[0] eq "prefs")
         {
-                system("$EDITOR $OMC_Config");
+                system("$FileEditor $OMC_Config");
                 exit 0;
         }
+}
+
+sub PrintDebugCommand
+{
+	if ($DEBUG_MODE eq "off")
+	{
+		return;
+	}
+	my $PassedString = shift;
+	print "About to run:\n$PassedString\n";
+	print "Press Enter To Run This:";
+	my $entered = <STDIN>;
 }
 
 open(FILEIN, '<', $OMC_Config) or die $!;
@@ -103,49 +115,96 @@ while(<FILEIN>)
 	chop();
 	if ($LastLine == 0)
 	{
-		$ServerName = $_;
+		$FileEditor = $_;
 		$LastLine++;
-		DebugPrint("saw server name '$ServerName'\n");
-		next;
+		PrintDebugCommand("saw file editor '$FileEditor'\n");
 	}
 	elsif ($LastLine == 1)
 	{
-		$SORTMODE = $_;
-		DebugPrint("saw sortmode '$SORTMODE'\n");
-		if (($SORTMODE ne "date") && ($SORTMODE ne "name"))
-		{
-			$SORTMODE = "name";
-		}
+		$InitDName = $_;
 		$LastLine++;
+		PrintDebugCommand("saw initdname '$InitDName'\n");
 	}
 	elsif ($LastLine == 2)
 	{
-		$DownloadNotice = $_;
+		$OPENMPDIR = $_;
 		$LastLine++;
-		DebugPrint("saw download notice '$DownloadNotice'\n");
-		next;
+		PrintDebugCommand("saw openmpdir '$OPENMPDIR'\n");
 	}
 	elsif ($LastLine == 3)
 	{
-		$RepoDir = $_;
+		$BackupCommand = $_;
 		$LastLine++;
-		DebugPrint("saw repodir '$RepoDir'\n");
-		next;
+		PrintDebugCommand("saw backup command '$BackupCommand'\n");
+	}
+	elsif ($LastLine == 4)
+	{
+		$OMPLog = $_;
+		$LastLine++;
+		PrintDebugCommand("saw omp log '$OMPLog'\n");
+	}
+	elsif ($LastLine == 5)
+	{
+		$OMCDir = $_;
+		$LastLine++;
+		PrintDebugCommand("saw omc dir '$OMCDir'\n");
+	}
+	elsif ($LastLine == 6)
+	{
+		$BackupToolDir = $_;
+		$LastLine++;
+		PrintDebugCommand("saw backup tool dir '$BackupToolDir'\n");
+	}
+	elsif ($LastLine == 7)
+	{
+		$StartupDir = $_;
+		$LastLine++;
+		PrintDebugCommand("saw startup dir '$StartupDir'\n");
+	}
+	elsif ($LastLine == 8)
+	{
+		$UpdateCommand = $_;
+		$LastLine++;
+		PrintDebugCommand("saw update command '$UpdateCommand'\n");
+	}
+	elsif ($LastLine == 9)
+	{
+		$BinDir = $_;
+		$LastLine++;
+		PrintDebugCommand("saw bindir '$BinDir'\n");
+	}
+	elsif ($LastLine == 10)
+	{
+		$DEBUG_MODE = $_;
+		$LastLine++;
+		PrintDebugCommand("saw debug mode '$DEBUG_MODE'\n");
+	}
+	elsif ($LastLine == 11)
+	{
+		$PagerCommand = $_;
+		$LastLine++;
+		PrintDebugCommand("saw pager command '$PagerCommand'\n");
+	}
+	elsif ($LastLine == 12)
+	{
+		$DiskFreeCmd = $_;
+		$LastLine++;
+		PrintDebugCommand("saw disk free command '$DiskFreeCmd'\n");
+	}
+	elsif ($LastLine == 13)
+	{
+		$MailQueueCmd = $_;
+		$LastLine++;
+		PrintDebugCommand("saw dmail quere command '$MailQueueCmd'\n");
+	}
+	elsif ($LastLine == 14)
+	{
+		$ShellCommand = $_;
+		$LastLine++;
+		PrintDebugCommand("saw shell command '$ShellCommand'\n");
 	}
 }
 close(FILEIN);
-
-sub PrintDebugCommand
-{
-	if ($DEBUG_MODE eq "off")
-	{
-		return;
-	}
-	my $PassedString = shift;
-	print "About to run:\n$PassedString\n";
-	print "Press Enter To Run This:";
-	my $entered = <STDIN>;
-}
 
 my $d = new UI::Dialog ( backtitle => "Open.mp Management Console v$OMC_ver", height => 20, width => 65, listheight => 5,
 	order => [ 'ascii', 'cdialog', 'xdialog' ]);
