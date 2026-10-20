@@ -9,8 +9,8 @@ use Term::ANSIScreen qw(cls);
 my $FileEditor = "/bin/nano";
 my $InitDName = "/home/openmpowner/bin/openmp";
 my $OPENMPDIR = "/home/openmpowner/Open.mp";
-my $BackupCommand = "/home/openmpowner/OpenmpBackup/openmpbackup.pl -snapshot";
-my $MUDLog = "/home/openmpowner/Open.mp/mud.log";
+my $BackupCommand = "/home/openmpowner/OpenmpBackup/openmpbackup.pl snapshot";
+my $OMPLog = "/home/openmpowner/Open.mp/mud.log";
 my $Pager = "/usr/bin/less";
 my $OMCDir = "/home/openmpowner/OpenmpManagementConsole";
 my $BackupToolDir = "/home/openmpowner/OpenmpBackup";
@@ -508,7 +508,7 @@ sub ProcessKill
                 elsif ($menuselection eq "2")
                 {
                         # Force-kill server process
-                        if ($d->yesno( text => "Confirm force-killing MUD process", text => "Are you *SURE* you want to force kill the MUD process?\nYou should first try the \#1 option and see if that works" ))
+                        if ($d->yesno( text => "Confirm force-killing Open.mp process", text => "Are you *SURE* you want to force kill the Open.mp process?\nYou should first try the \#1 option and see if that works" ))
                         {
 				if ($ServerStatus eq "Running")
 				{
@@ -541,19 +541,15 @@ sub MainMenu
                                       '3', 'Server Console',
                                       '4', 'Turn Respawn Off',
                                       '5', 'Turn Respawn On',
-                                      '6', 'Edit mudUNIX.sh',
-                                      '7', 'Edit coffeemud.ini',
-                                      '8', 'Backup MUD',
-                                      '9', 'View MUD Log',
-                                      '10', 'Kill MUD Process',
-                                      '11', 'Edit intro.txt',
-                                      '12', 'Update Utils',
-                                      'XXX', 'Update CoffeeMud',
-                                      '14', 'Connect to MUD',
-                                      '15', 'Edit Texts',
-                                      '16', 'Ubuntu Version',
-                                      '17', 'Utilities',
-                                      '18', 'Spawn Shell',
+                                      '6', 'Edit config.json',
+                                      '7', 'Edit bans.json',
+                                      '8', 'Backup Open.mp',
+                                      '9', 'View Open.mp Log',
+                                      '10', 'Kill Open.mp Process',
+                                      '11', 'Update Utils',
+                                      '12', 'Ubuntu Version',
+                                      '13', 'Utilities',
+                                      '14', 'Spawn Shell',
                                       'q', 'Quit OMC' ] );
 }
 
@@ -601,13 +597,13 @@ while (-1)
 	}
 	elsif ($menuselection eq "6")
 	{
-		# Edit mudUNIX.sh file
-		system("$FileEditor $OPENMPDIR/mudUNIX.sh");
+		# Edit config.json file
+		system("$FileEditor $OPENMPDIR/config.json");
 	}
 	elsif ($menuselection eq "7")
 	{
-		# Edit coffeemud.ini file
-		system("$FileEditor $OPENMPDIR/coffeemud.ini");
+		# Edit bans.json file
+		system("$FileEditor $OPENMPDIR/bans.json");
 	}
 	elsif ($menuselection eq "8")
 	{
@@ -620,7 +616,7 @@ while (-1)
 	elsif ($menuselection eq "9")
 	{
                 # View the log file
-                system("$Pager $MUDLog");
+                system("$Pager $OMPLog");
 	}
 	elsif ($menuselection eq "10")
 	{
@@ -628,33 +624,10 @@ while (-1)
 	}
 	elsif ($menuselection eq "11")
 	{
-		# Edit intro.txt file
-		system("$FileEditor $TEXTDIR/intro.txt");
-	}
-	elsif ($menuselection eq "12")
-	{
 		# Update Menu
 		UpdateTools();
 	}
-	elsif ($menuselection eq "XXX")
-	{
-		# Update CoffeeMud
-		UpdateCM();
-	}
-	elsif ($menuselection eq "14")
-	{
-		# Telnet to MUD
-                system("clear");
-		system("$TelnetCmd localhost $MUDPORT");
-		print "Press Enter To Continue: ";
-		my $entered = <STDIN>;
-	}
-	elsif ($menuselection eq "15")
-	{
-		# Text File Menu
-		EditText();
-	}
-	elsif ($menuselection eq "16")
+	elsif ($menuselection eq "12")
 	{
 		# Display Ubuntu version
                 system("clear");
@@ -662,12 +635,12 @@ while (-1)
 		print "Press Enter To Continue: ";
 		my $entered = <STDIN>;
 	}
-	elsif ($menuselection eq "17")
+	elsif ($menuselection eq "13")
 	{
 		# Run utilities
 		SystemUtilities();
 	}
-	elsif ($menuselection eq "18")
+	elsif ($menuselection eq "14")
 	{
 		# Run bash shell
 		system("clear");
