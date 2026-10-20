@@ -10,7 +10,7 @@ my $FileEditor = "/bin/nano";
 my $InitDName = "/home/openmpowner/bin/openmp";
 my $OPENMPDIR = "/home/openmpowner/Open.mp";
 my $BackupCommand = "/home/openmpowner/OpenmpBackup/openmpbackup.pl snapshot";
-my $OMPLog = "/home/openmpowner/Open.mp/mud.log";
+my $OMPLog = "/home/openmpowner/Open.mp/log.txt";
 my $Pager = "/usr/bin/less";
 my $OMCDir = "/home/openmpowner/OpenmpManagementConsole";
 my $BackupToolDir = "/home/openmpowner/OpenmpBackup";
@@ -18,12 +18,6 @@ my $StartupDir = "/home/openmpowner/OpenmpStartup";
 my $UpdateCommand = "/usr/bin/git pull";
 my $BinDir = "/home/openmpowner/bin";
 my $DEBUG_MODE = "off";
-my $MUDPORT = "5555";
-my $TEXTDIR = "$OPENMPDIR/resources/text";
-my $FAKEDBOLDDIR = "$OPENMPDIR/oldcm/resources/fakedb";
-my $FAKEDBNEWDIR = "$OPENMPDIR/resources/fakedb";
-my $UpdateStepsFile = "$OMCDir/UpdateSteps.txt";
-my $MigrateFakeDB = "$OMCDir/mudUpdate.sh";
 my $PagerCommand = "/usr/bin/less";
 my $TelnetCmd = "/usr/bin/telnet";
 my $DiskFreeCmd = "/usr/bin/df -h";
@@ -98,36 +92,6 @@ sub DoUpdate
 	my $entered = <STDIN>;
 }
 
-sub EditTextMenu
-{
-	my $WantRespawn="ON";
-	CheckServerStatus();
-	if (-f "$OPENMPDIR/nostart")
-	{
-		$WantRespawn="OFF";
-	}
-	$menuselection = $d->menu( title => "Edit Text Files Menu", text => "Server is $ServerStatus and respawn is $WantRespawn - Select one:",
-                            list => [ '1', 'Blocked',
-                                      '2', 'Classes',
-                                      '3', 'Conblocked',
-                                      '4', 'Credits',
-                                      '5', 'DoneAcct.',
-                                      '6', 'Down',
-                                      '7', 'Email',
-                                      '8', 'Inclination',
-                                      '9', 'Newacct',
-                                      '10', 'NewCharDone',
-                                      '11', 'NewChar',
-                                      '12', 'NoLogins',
-                                      '13', 'Offline',
-                                      '14', 'Races',
-                                      '15', 'Rules',
-                                      '16', 'SelChar',
-                                      '17', 'Stats',
-                                      '18', 'Themes',
-                                      'q', 'Main Menu' ] );
-}
-
 sub SystemUtilMenu
 {
 	my $WantRespawn="ON";
@@ -191,108 +155,6 @@ sub SystemUtilities
 	                system("$MailQueueCmd");
                         print "Press Enter To Continue:";
                         my $entered = <STDIN>;
-		}
-	}
-}
-
-sub EditText
-{
-	while (-1)
-	{
-		EditTextMenu();
-		if (($menuselection eq "CANCEL") || ($menuselection eq "ESC") || ($menuselection eq "") || ($menuselection eq "q") || ($menuselection eq "Q"))
-		{
-			return;
-		}
-		elsif ($menuselection eq "1")
-		{
-			# Edit blocked.txt file
-			system("$FileEditor $TEXTDIR/blocked.txt");
-		}
-		elsif ($menuselection eq "2")
-		{
-			# Edit classes.txt file
-			system("$FileEditor $TEXTDIR/classes.txt");
-		}
-		elsif ($menuselection eq "3")
-		{
-			# Edit conblocked.txt file
-			system("$FileEditor $TEXTDIR/conblocked.txt");
-		}
-		elsif ($menuselection eq "4")
-		{
-			# Edit conblocked.txt file
-			system("$FileEditor $TEXTDIR/credits.txt");
-		}
-		elsif ($menuselection eq "5")
-		{
-			# Edit doneacct.txt file
-			system("$FileEditor $TEXTDIR/doneacct.txt");
-		}
-		elsif ($menuselection eq "6")
-		{
-			# Edit down.txt file
-			system("$FileEditor $TEXTDIR/down.txt");
-		}
-		elsif ($menuselection eq "7")
-		{
-			# Edit email.txt file
-			system("$FileEditor $TEXTDIR/email.txt");
-		}
-		elsif ($menuselection eq "8")
-		{
-			# Edit inclination.txt file
-			system("$FileEditor $TEXTDIR/inclination.txt");
-		}
-		elsif ($menuselection eq "9")
-		{
-			# Edit newacct.txt file
-			system("$FileEditor $TEXTDIR/newacct.txt");
-		}
-		elsif ($menuselection eq "10")
-		{
-			# Edit newchardone.txt file
-			system("$FileEditor $TEXTDIR/newchardone.txt");
-		}
-		elsif ($menuselection eq "11")
-		{
-			# Edit newchar.txt file
-			system("$FileEditor $TEXTDIR/newchar.txt");
-		}
-		elsif ($menuselection eq "12")
-		{
-			# Edit nologins.txt file
-			system("$FileEditor $TEXTDIR/nologins.txt");
-		}
-		elsif ($menuselection eq "13")
-		{
-			# Edit offline.txt file
-			system("$FileEditor $TEXTDIR/offline.txt");
-		}
-		elsif ($menuselection eq "14")
-		{
-			# Edit races.txt file
-			system("$FileEditor $TEXTDIR/races.txt");
-		}
-		elsif ($menuselection eq "15")
-		{
-			# Edit rules.txt file
-			system("$FileEditor $TEXTDIR/rules.txt");
-		}
-		elsif ($menuselection eq "16")
-		{
-			# Edit selchar.txt file
-			system("$FileEditor $TEXTDIR/selchar.txt");
-		}
-		elsif ($menuselection eq "17")
-		{
-			# Edit stats.txt file
-			system("$FileEditor $TEXTDIR/stats.txt");
-		}
-		elsif ($menuselection eq "18")
-		{
-			# Edit themes.txt file
-			system("$FileEditor $TEXTDIR/themes.txt");
 		}
 	}
 }
@@ -364,104 +226,6 @@ sub UpdateCMMenu
                                       '5', 'Fix Schema',
                                       '6', 'Edit coffeemud.ini',
                                       'q', 'Main Menu' ] );
-}
-
-sub FixSchema
-{
-	print "Schema update proceding...\n";
-	system("$MigrateFakeDB");
-	print "Completed. Did it work?\n";
-	sleep(5);
-}
-
-sub UpdateCM
-{
-	while (-1)
-	{
-		UpdateCMMenu();
-		if (($menuselection eq "CANCEL") || ($menuselection eq "ESC") || ($menuselection eq "") || ($menuselection eq "q") || ($menuselection eq "Q"))
-		{
-			return;
-		}
-		elsif ($menuselection eq "1")
-		{
-			# View update steps
-			system("$Pager $UpdateStepsFile");
-		}
-		elsif ($menuselection eq "2")
-		{
-			# Run a backup
-			system("clear");
-			system("$BackupCommand");
-			print "Press Enter To Continue";
-			my $entered = <STDIN>;
-		}
-		elsif ($menuselection eq "3")
-		{
-			# Backup fakedb
-			system("clear");
-			if (! -d $FAKEDBOLDDIR)
-			{
-				print "$FAKEDBOLDDIR doesnt exist, creating:\n";
-				system("mkdir -p $FAKEDBOLDDIR");
-			}
-			system("cp -r $FAKEDBNEWDIR/* $FAKEDBOLDDIR");
-			print "Fakedb settings copied\n";
-			sleep(5);
-		}
-		elsif ($menuselection eq "4")
-		{
-			# Rebuild CoffeeMud
-			system("clear");
-			print "Do you want to pull updates from the repo (N/y): ";
-			my $entered = <STDIN>;
-			my $DidBuild = "n";
-			chop($entered);
-			if (($entered eq "y") || ($entered eq "Y"))
-			{
-				$entered = "";
-				$DidBuild = "y";
-				chdir($OPENMPDIR);
-				system("touch $OPENMPDIR/nostart");
-				my $running=`ps ax|grep coffee_mud|grep -v grep`;
-				if ($running ne "")
-				{
-					# Process is running, kill it
-					print "Killing CoffeeMud process:\n";
-					system("killall omp-server");
-					sleep(5);
-				}
-				system("cp coffeemud.ini coffeemud.ini-keep");
-				system("git pull");
-				print "Did it work? If not address the issues and rerun this step again.\nPress Enter To Continue: ";
-				$entered = <STDIN>;
-			}
-			print "Do you want to recompile CoffeeMud? (N/y): ";
-			$entered = <STDIN>;
-			chop($entered);
-			if (($entered eq "y") || ($entered eq "Y"))
-			{
-				chdir($OPENMPDIR);
-				system("./InstallUNIX-auto.sh");
-				if ($DidBuild eq "y")
-				{
-					system("cp coffeemud.ini-keep coffeemud.ini");
-				}
-			}
-			print "All done! Press ENTER to continue: ";
-			$entered = <STDIN>;
-		}
-		elsif ($menuselection eq "5")
-		{
-			# Fix Schema
-			FixSchema();
-		}
-		elsif ($menuselection eq "6")
-		{
-			# Edit coffeemud.ini file
-			system("$FileEditor $OPENMPDIR/coffeemud.ini");
-		}
-	}
 }
 
 sub ProcesKillMenu
