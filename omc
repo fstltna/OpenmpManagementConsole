@@ -11,7 +11,6 @@ my $InitDName = "/home/openmpowner/bin/openmp";
 my $OPENMPDIR = "/home/openmpowner/Open.mp";
 my $BackupCommand = "/home/openmpowner/OpenmpBackup/openmpbackup.pl snapshot";
 my $OMPLog = "/home/openmpowner/Open.mp/log.txt";
-my $Pager = "/usr/bin/less";
 my $OMCDir = "/home/openmpowner/OpenmpManagementConsole";
 my $BackupToolDir = "/home/openmpowner/OpenmpBackup";
 my $StartupDir = "/home/openmpowner/OpenmpStartup";
@@ -19,7 +18,6 @@ my $UpdateCommand = "/usr/bin/git pull";
 my $BinDir = "/home/openmpowner/bin";
 my $DEBUG_MODE = "off";
 my $PagerCommand = "/usr/bin/less";
-my $TelnetCmd = "/usr/bin/telnet";
 my $DiskFreeCmd = "/usr/bin/df -h";
 my $MailQueueCmd = "/usr/bin/mailq";
 my $ShellCommand = "/usr/bin/bash";
@@ -35,6 +33,39 @@ my $RobotName = "";
 my $BotVersion = "";
 my $UserName = "";
 my $ServerStatus = "foo";
+
+my $defaultconfig = <<"END_TEMPLATE";
+# What editor to use
+$FileEditor
+# What is the startup script path
+$InitDName
+# Where is the Open.mp install directory
+$OPENMPDIR
+# What is the backup command
+$BackupCommand
+# WHere is the log file
+$OMPLog
+# Where is the OMC directory
+$OMCDir
+# Where is the OMC Backup dir
+$BackupToolDir
+# Where is the OMC Startup script folder
+$StartupDir
+# What is the command to get updates
+$UpdateCommand
+# Where does this user store their local tools
+$BinDir
+# Is debug mode on?
+$DEBUG_MODE
+# What should we user for paging output
+$PagerCommand
+# How do we get free space?
+$DiskFreeCmd
+# How do we get the mail queue?
+$MailQueueCmd
+# How do we spawn a shell?
+$ShellCommand
+END_TEMPLATE
 
 sub PrintDebugCommand
 {
@@ -353,7 +384,7 @@ while (-1)
 	elsif ($menuselection eq "9")
 	{
                 # View the log file
-                system("$Pager $OMPLog");
+                system("$PagerCommand $OMPLog");
 	}
 	elsif ($menuselection eq "10")
 	{
